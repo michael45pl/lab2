@@ -1,0 +1,57 @@
+---
+title: "HW4_koopmann"
+author: "Michael Koopmann"
+date: "2/23/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question Set 1:
+
+```{r cars}
+choco <- read.csv("https://ds202-at-isu.github.io/labs/data/choco.csv")
+head(choco)
+
+summary(choco$Rating)
+```
+1) There are 1852 chocolate bars rated with the Mean rating of 3.191
+
+2) Plot of number of reports by year
+
+```{r pressure, echo=FALSE}
+library(ggplot2)
+library(scales)
+
+ggplot(choco, aes(x = Review.Date)) + geom_bar(position='dodge', colour='black') + scale_x_continuous(breaks = pretty_breaks()) + labs(title = "Reviews per Year")
+
+```
+
+Question Set 2:
+
+1)
+```{r}
+ggplot(choco, aes(x = Rating)) + geom_histogram(bins = 17, colour="black", fill="white")
+```
+The graph shows high concentration of ratings between 2.5 and 4 and the sharp drop off after 4 and the few 5 ratings.  Our Q1 is at 3 and Q3 is 3.5 so the range is .5 so all the ratings below 2.25 are outliers along with the marking at 5.
+
+2)
+```{r}
+ggplot(choco, aes(x = Cocoa.Pct, y = Rating)) + geom_jitter()
+```
+No I don't see any trend within the plot theres lower percentage with the same rating as higher percentage.  I will say that ideal range seems to be between 60 and 80 percentage.
+
+
+3)
+```{r}
+subchoco <- dplyr::filter(choco, Company.Location %in% c("U.S.A.", "France", "Canada"))
+ggplot(subchoco, aes(x = Company.Location, y = Rating))+
+  geom_boxplot()+
+  coord_flip()+
+  ylab("Rating")
+```
+All 3 locations have a similiar mean but Canada has a larger upper quantile  about double of France and USA which have similiar upper quantile.  Also USA has a larger lower quantile which is about double France and Canada which have similiar lower quantile.  All 3 upper adjacent goes to 4 but the lower adjacent of France only goes to 2.5 while Cananda and USA goes to 2.  From this I'd say that France has better consistency of having a higher rating but Canada upper quantile being larger makes me say that they have the best ratings.
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
